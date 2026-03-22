@@ -1,10 +1,10 @@
 task:
-  name: "Infinity_X_2.9_Joe_Fast_Build"
+  name: "Infinity_X_2.9_Joe_Ultra_Build"
   timeout_in: 120m
   arm_container:
     image: ubuntu:22.04
     cpu: 8
-    memory: 24G
+    memory: 32G # هنا الـ 32 جيجا اللي طلبتها يا وحش
 
   setup_script:
     - apt-get update
@@ -16,22 +16,20 @@ task:
 
   sync_script:
     - export PATH="$HOME/bin:$PATH"
-    # السطر ده بيمنع جيتهاب يطلب باسورد ويخزوقنا
-    - export GIT_TERMINAL_PROMPT=0
+    - export GIT_TERMINAL_PROMPT=0 
     - mkdir -p ~/android && cd ~/android
     - git config --global user.email "joe@alexandria.com"
     - git config --global user.name "Joe"
     
-    # تحميل سورس إنفينيتي السريع
     - repo init -u https://github.com/ProjectInfinity-X/manifest -b 15 --depth=1
     - repo sync -c -j$(nproc --all) --force-sync --no-clone-bundle --no-tags --optimized-fetch --prune
-    
-    # تحميل ملفات T505N من جيتهاب (لينيج وماپيتس)
-    # بيحاول يسحب فرع 22.1، لو ملقاهوش بياخد 21.0 فوراً عشان ميوقفش
+
+    # روابط Samsung T505N - بنجرب 22.1 ولو مش موجود بناخد 21.0 فوراً
     - git clone --depth=1 -b lineage-22.1 https://github.com/LineageOS/android_device_samsung_gta4l device/samsung/gta4l || git clone --depth=1 -b lineage-21.0 https://github.com/LineageOS/android_device_samsung_gta4l device/samsung/gta4l
     - git clone --depth=1 -b lineage-22.1 https://github.com/LineageOS/android_device_samsung_gta4l-common device/samsung/gta4l-common || git clone --depth=1 -b lineage-21.0 https://github.com/LineageOS/android_device_samsung_gta4l-common device/samsung/gta4l-common
     - git clone --depth=1 -b lineage-22.1 https://github.com/LineageOS/android_kernel_samsung_gta4l kernel/samsung/gta4l || git clone --depth=1 -b lineage-21.0 https://github.com/LineageOS/android_kernel_samsung_gta4l kernel/samsung/gta4l
     
+    # الـ Vendor من TheMuppets
     - git clone --depth=1 -b lineage-22.1 https://github.com/TheMuppets/proprietary_vendor_samsung_gta4l vendor/samsung/gta4l || git clone --depth=1 -b lineage-21.0 https://github.com/TheMuppets/proprietary_vendor_samsung_gta4l vendor/samsung/gta4l
     - git clone --depth=1 -b lineage-22.1 https://github.com/TheMuppets/proprietary_vendor_samsung_gta4l-common vendor/samsung/gta4l-common || git clone --depth=1 -b lineage-21.0 https://github.com/TheMuppets/proprietary_vendor_samsung_gta4l-common vendor/samsung/gta4l-common
     
