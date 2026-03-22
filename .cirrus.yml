@@ -1,7 +1,6 @@
 task:
   name: "Infinity_X_2.9_Joe_Final_Build"
   timeout_in: 120m
-  # هنا السر.. بنستخدم سيرفراتهم المباشرة مش GCE
   arm_container:
     image: ubuntu:22.04
     cpu: 8
@@ -9,7 +8,8 @@ task:
 
   setup_script:
     - apt-get update
-    - apt-get install -y git-core gnupg flex bison gperf build-essential zip curl zlib1g-dev libc6-dev-i386 libncurses5 lib32ncurses5-dev x11proto-core-dev libx11-dev lib32z1-dev libgl1-mesa-dev libxml2-utils xsltproc unzip fontconfig ccache bc libssl-dev rsync python3 python3-pip ninja-build python-is-python3 libxml2 aria2 git-lfs openjdk-17-jdk imagemagick libelf-dev libncursesw5-dev libghc-zlib-dev gcc-multilib g++-multilib lz4 liblz4-tool pigz openssh-client sudo
+    # هنا شيلت كل حزم الـ 32 بت اللي عملت الـ Error وضفت البدائل الصح للـ Arm64
+    - apt-get install -y git-core gnupg flex bison gperf build-essential zip curl zlib1g-dev libc6-dev libncurses5 x11proto-core-dev libx11-dev libgl1-mesa-dev libxml2-utils xsltproc unzip fontconfig ccache bc libssl-dev rsync python3 python3-pip ninja-build python-is-python3 libxml2 aria2 git-lfs openjdk-17-jdk imagemagick libelf-dev libncursesw5-dev libghc-zlib-dev lz4 liblz4-tool pigz openssh-client sudo
     - mkdir -p ~/bin
     - curl https://storage.googleapis.com/git-repo-downloads/repo > ~/bin/repo
     - chmod a+x ~/bin/repo
@@ -23,7 +23,7 @@ task:
     - repo init -u https://github.com/ProjectInfinity-X/manifest -b 15 --depth=1
     - repo sync -c -j$(nproc --all) --force-sync --no-clone-bundle --no-tags
     
-    # Trees T505N
+    # تحميل Trees الـ T505N
     - git clone --depth=1 https://github.com/LineageOS/android_device_samsung_gta4l -b lineage-22.1 device/samsung/gta4l
     - git clone --depth=1 https://github.com/LineageOS/android_device_samsung_gta4l-common -b lineage-22.1 device/samsung/gta4l-common
     - git clone --depth=1 https://github.com/LineageOS/android_kernel_samsung_gta4l -b lineage-22.1 kernel/samsung/gta4l
